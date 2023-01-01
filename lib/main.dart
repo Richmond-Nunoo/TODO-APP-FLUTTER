@@ -3,7 +3,6 @@ import 'package:flutter_todolist/screens/notes_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(const StartPage());
-
 class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
 

@@ -18,6 +18,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    print(colors.length);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -44,127 +45,139 @@ class _MyAppState extends State<MyApp> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 12,
-          ),
-          const Text("Todo's Available!",
-              style: TextStyle(color: Colors.grey, fontSize: 15)),
-          const SizedBox(
-            height: 12,
-          ),
-          Expanded(
-              child: todos.isNotEmpty
-                  ? AnimatedList(
-                      initialItemCount: todos.length,
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (context, index, animation) {
-                        return Slidable(
-                          key: Key(todos[index]),
-                          startActionPane: const ActionPane(
-                              motion: ScrollMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: null,
-                                  label: 'Edit',
-                                  icon: CupertinoIcons.pencil_outline,
-                                  backgroundColor: Colors.white60,
-                                )
-                              ]),
-                          endActionPane: ActionPane(
-                              motion: const ScrollMotion(),
-                              children: [
-                                SlidableAction(
-                                  key: Key(todos[index]),
-                                  onPressed: (_) => {
-                                    setState(() {
-                                      todos.remove(todos[index]);
-                                      colors.remove(colors[index]);
-                                    })
-                                  },
-                                  backgroundColor: Colors.white,
-                                  icon: Icons.delete,
-                                  label: 'Delete',
-                                )
-                              ]),
-                          child: Container(
-                            height: 90,
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                                color: colors[index],
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: ListTile(
-                                    leading: const Icon(
-                                      CupertinoIcons.check_mark_circled,
-                                      color: Colors.white,
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 12,
+            ),
+            const Text("Todo's Available!",
+                style: TextStyle(color: Colors.grey, fontSize: 15)),
+            const SizedBox(
+              height: 12,
+            ),
+            Expanded(
+                child: todos.isNotEmpty
+                    ? ListView.separated(
+                        itemCount: todos.length,
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (
+                          context,
+                          index,
+                        ) {
+                          return Slidable(
+                            key: Key(todos[index]),
+                            startActionPane: const ActionPane(
+                                motion: ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    onPressed: null,
+                                    label: 'Edit',
+                                    icon: CupertinoIcons.pencil_outline,
+                                    backgroundColor: Colors.white60,
+                                  )
+                                ]),
+                            endActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                children: [
+                                  SlidableAction(
+                                    key: Key(todos[index]),
+                                    onPressed: (_) => {
+                                      setState(() {
+                                        todos.remove(todos[index]);
+                                        colors.remove(colors[index]);
+                                      })
+                                    },
+                                    backgroundColor: Colors.white,
+                                    icon: Icons.delete,
+                                    label: 'Delete',
+                                  )
+                                ]),
+                            child: Container(
+                              height: 90,
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                  color: colors[index],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: ListTile(
+                                      leading: const Icon(
+                                        CupertinoIcons.check_mark_circled,
+                                        color: Colors.white,
+                                      ),
+                                      title: Text(todos[index]),
+                                      trailing: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          //  const    Icon(CupertinoIcons.bell_circle,color: Colors.white,),
+                                          Text(DateFormat('yyyy-MM-dd')
+                                              .format(DateTime.now()))
+                                        ],
+                                      ),
                                     ),
-                                    title: Text(todos[index]),
-                                    trailing: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        //  const    Icon(CupertinoIcons.bell_circle,color: Colors.white,),
-                                        Text(DateFormat('yyyy-MM-dd')
-                                            .format(DateTime.now()))
-                                      ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(
+                            height: 16,
+                          );
+                        },
+                      )
+                    : LayoutBuilder(builder: (ctx, constrains) {
+                        return ListView(
+                          children: [
+                            Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      "Good Day,Mr Kweku Anansi.",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w100,
+                                      ),
                                     ),
+                                    Text(DateFormat('KK:mm a')
+                                        .format(DateTime.now()))
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 50,
+                                ),
+                                const Text(
+                                  'Empty Todos...',
+                                  style: TextStyle(
+                                      fontSize: 35,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Container(
+                                  height: 300,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                          "assets/new.png",
+                                        ),
+                                        fit: BoxFit.fill),
                                   ),
                                 )
                               ],
                             ),
-                          ),
+                          ],
                         );
-                      },
-                    )
-                  : LayoutBuilder(builder: (ctx, constrains) {
-                      return ListView(
-                        children: [
-                          Column(
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  const Text(
-                                    "Good Day,Mr Kweku Anansi.",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w100,
-                                    ),
-                                  ),
-                                  Text(DateFormat('KK:mm a')
-                                      .format(DateTime.now()))
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 50,
-                              ),
-                              const Text(
-                                'Empty Todos...',
-                                style: TextStyle(
-                                    fontSize: 35, fontWeight: FontWeight.bold),
-                              ),
-                              Container(
-                                height: 300,
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                        "assets/new.png",
-                                      ),
-                                      fit: BoxFit.fill),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      );
-                    }))
-        ],
+                      }))
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -228,15 +241,18 @@ class _MyAppState extends State<MyApp> {
                             child: Column(
                               children: const [
                                 SizedBox(
-                                    height: 50,
-                                    width: double.infinity,
-                                    child: Card(
-                                        color: Colors.blue,
-                                        child: Center(
-                                            child: Text(
-                                          "Save",
-                                          style: TextStyle(color: Colors.black),
-                                        ))))
+                                  height: 50,
+                                  width: double.infinity,
+                                  child: Card(
+                                    color: Colors.blue,
+                                    child: Center(
+                                      child: Text(
+                                        "Save",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                  ),
+                                )
                               ],
                             ),
                           ),
