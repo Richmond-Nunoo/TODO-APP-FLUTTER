@@ -18,7 +18,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    print(colors.length);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
